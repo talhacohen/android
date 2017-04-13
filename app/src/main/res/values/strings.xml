@@ -264,4 +264,11 @@
     <string name="import_button_local">From Account</string>
     <string name="import_select_account">Select Account</string>
 
+    <!-- Remote register -->
+    <string name="api_register_title">"Allow access to EteSync?"</string>
+    <string name="api_register_text">"%s requests to access your account. This will allow the app to modify your account"</string>
+    <string name="api_register_allow">"Allow access"</string>
+    <string name="api_register_disallow">"Disallow access"</string>
+    <string name="api_permission_not_granted">Permission not granted.</string>
+    <string name="api_permission_granted">Permission granted</string>
 </resources>
