@@ -32,7 +32,6 @@ import at.bitfire.ical4android.AndroidTaskList;
 import at.bitfire.ical4android.AndroidTaskListFactory;
 import at.bitfire.ical4android.CalendarStorageException;
 import at.bitfire.ical4android.TaskProvider;
-import lombok.Cleanup;
 
 public class LocalTaskList extends AndroidTaskList implements LocalCollection {
 
@@ -117,11 +116,15 @@ public class LocalTaskList extends AndroidTaskList implements LocalCollection {
         String whereArgs[] = {String.valueOf(getId())};
 
         try {
-            @Cleanup Cursor cursor = provider.client.query(
+            Cursor cursor = provider.client.query(
                     syncAdapterURI(provider.tasksUri()),
                     null,
                     where, whereArgs, null);
-            return cursor.getCount();
+            try {
+                return cursor.getCount();
+            } finally {
+                cursor.close();
+            }
         } catch (RemoteException e) {
             throw new CalendarStorageException("Couldn't query calendar events", e);
         }
@@ -133,8 +136,13 @@ public class LocalTaskList extends AndroidTaskList implements LocalCollection {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             return context.getPackageManager().resolveContentProvider(TaskProvider.ProviderName.OpenTasks.authority, 0) != null;
         else {
-            @Cleanup TaskProvider provider = TaskProvider.acquire(context.getContentResolver(), TaskProvider.ProviderName.OpenTasks);
-            return provider != null;
+            TaskProvider provider = TaskProvider.acquire(context.getContentResolver(), TaskProvider.ProviderName.OpenTasks);
+            try {
+                return provider != null;
+            } finally {
+                if (provider != null)
+                    provider.close();
+            }
         }
     }
 
