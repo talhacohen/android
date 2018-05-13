@@ -1,6 +1,5 @@
 package com.etesync.syncadapter.model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import io.requery.Column;
@@ -147,6 +146,17 @@ public class JournalModel {
 
         public static ServiceEntity fetch(EntityDataStore<Persistable> data, String account, CollectionInfo.Type type) {
             return data.select(ServiceEntity.class).where(ServiceEntity.ACCOUNT.eq(account).and(ServiceEntity.TYPE.eq(type))).limit(1).get().firstOrNull();
+        }
+
+        public static ServiceEntity fetchOrCreate(EntityDataStore<Persistable> data, String account, CollectionInfo.Type type) {
+            ServiceEntity serviceEntity = fetch(data, account, type);
+            if (serviceEntity == null) {
+                serviceEntity = new ServiceEntity();
+                serviceEntity.setAccount(account);
+                serviceEntity.setType(type);
+                data.insert(serviceEntity);
+            }
+            return serviceEntity;
         }
     }
 

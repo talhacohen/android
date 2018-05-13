@@ -119,7 +119,7 @@ public class TasksSyncAdapterService extends SyncAdapterService {
 
         private void updateLocalTaskLists(TaskProvider provider, Account account, AccountSettings settings) throws CalendarStorageException {
             EntityDataStore<Persistable> data = ((App) getContext().getApplicationContext()).getData();
-            ServiceEntity service = JournalModel.Service.fetch(data, account.name, CollectionInfo.Type.TASK_LIST);
+            ServiceEntity service = JournalModel.Service.fetchOrCreate(data, account.name, CollectionInfo.Type.TASK_LIST);
 
             Map<String, JournalEntity> remote = new HashMap<>();
             List<JournalEntity> remoteJournals = JournalEntity.getJournals(data, service);
