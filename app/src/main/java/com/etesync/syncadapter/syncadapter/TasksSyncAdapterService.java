@@ -100,7 +100,7 @@ public class TasksSyncAdapterService extends SyncAdapterService {
                 }
 
                 int syncPhase = R.string.sync_phase_journals;
-                String title = getContext().getString(R.string.sync_error_calendar, account.name);
+                String title = getContext().getString(R.string.sync_error_tasks, account.name);
 
                 notificationManager.setThrowable(e);
 
