@@ -67,7 +67,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
-import at.bitfire.ical4android.Task;
 import at.bitfire.ical4android.TaskProvider;
 import at.bitfire.vcard4android.ContactsStorageException;
 import io.requery.Persistable;
@@ -297,7 +296,7 @@ public class AccountActivity extends BaseActivity implements Toolbar.OnMenuItemC
             ProgressBar progress = (ProgressBar)findViewById(R.id.caldav_refreshing);
             progress.setVisibility(info.tasks.refreshing ? View.VISIBLE : View.GONE);
 
-            listTasks = (ListView)findViewById(R.id.calendars);
+            listTasks = (ListView)findViewById(R.id.tasks);
             listTasks.setEnabled(!info.tasks.refreshing);
             listTasks.setAlpha(info.tasks.refreshing ? 0.5f : 1);
 
