@@ -15,6 +15,7 @@ import android.provider.CalendarContract.Events;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.etesync.syncadapter.App;
 import com.etesync.syncadapter.Constants;
 
 import net.fortuna.ical4j.model.property.ProdId;
@@ -33,7 +34,6 @@ import at.bitfire.ical4android.AndroidTaskFactory;
 import at.bitfire.ical4android.AndroidTaskList;
 import at.bitfire.ical4android.CalendarStorageException;
 import at.bitfire.ical4android.Task;
-import at.bitfire.vcard4android.ContactsStorageException;
 
 public class LocalTask extends AndroidTask implements LocalResource {
     static {
