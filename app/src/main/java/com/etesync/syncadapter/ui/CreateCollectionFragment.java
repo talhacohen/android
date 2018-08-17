@@ -16,12 +16,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.CalendarContract;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 
 import com.etesync.syncadapter.AccountSettings;
 import com.etesync.syncadapter.App;
@@ -128,7 +128,7 @@ public class CreateCollectionFragment extends DialogFragment implements LoaderMa
                 String authority = null;
 
                 EntityDataStore<Persistable> data = ((App) getContext().getApplicationContext()).getData();
-
+                Log.e("TALTALTAL1", info.type +"");
                 // 1. find service ID
                 if (info.type == CollectionInfo.Type.ADDRESS_BOOK) {
                     authority = App.getAddressBooksAuthority();
@@ -139,9 +139,10 @@ public class CreateCollectionFragment extends DialogFragment implements LoaderMa
                 } else {
                     throw new IllegalArgumentException("Collection must be an address book or calendar");
                 }
+                Log.e("TALTALTAL3", "SSSSSS");
 
-                ServiceEntity serviceEntity = JournalModel.Service.fetch(data, account.name, info.type);
-
+                ServiceEntity serviceEntity = JournalModel.Service.fetchOrCreate(data, account.name, info.type);
+                Log.e("TALTALTAL3", serviceEntity +"");
                 AccountSettings settings = new AccountSettings(getContext(), account);
                 HttpUrl principal = HttpUrl.get(settings.getUri());
 
@@ -159,8 +160,10 @@ public class CreateCollectionFragment extends DialogFragment implements LoaderMa
 
                 // 2. add collection to service
                 info.serviceID = serviceEntity.getId();
+                Log.e("TALTALTAL2", info.toJson());
                 JournalEntity journalEntity = JournalEntity.fetchOrCreate(data, info);
                 data.upsert(journalEntity);
+                Log.e("TALTALTAL3", journalEntity.toString());
 
 
                 requestSync(authority);

@@ -52,7 +52,8 @@ public class BaseConfigurationFinder {
         boolean failed = false;
         Configuration.ServiceInfo
                 cardDavConfig = findInitialConfiguration(CollectionInfo.Type.ADDRESS_BOOK),
-                calDavConfig = findInitialConfiguration(CollectionInfo.Type.CALENDAR);
+                calDavConfig = findInitialConfiguration(CollectionInfo.Type.CALENDAR),
+                tasksConfig = findInitialConfiguration(CollectionInfo.Type.TASK_LIST);
 
         JournalAuthenticator authenticator = new JournalAuthenticator(httpClient, HttpUrl.get(credentials.uri));
 
@@ -69,6 +70,7 @@ public class BaseConfigurationFinder {
                 credentials.uri,
                 credentials.userName, authtoken,
                 cardDavConfig, calDavConfig,
+                tasksConfig,
                 logBuffer.toString(), failed
         );
     }
@@ -86,12 +88,13 @@ public class BaseConfigurationFinder {
     public static class Configuration implements Serializable {
         // We have to use URI here because HttpUrl is not serializable!
 
-        public Configuration(final URI url, final String userName, final String authtoken, final ServiceInfo cardDAV, final ServiceInfo calDAV, final String logs, final boolean failed) {
+        public Configuration(final URI url, final String userName, final String authtoken, final ServiceInfo cardDAV, final ServiceInfo calDAV, final ServiceInfo tasks, final String logs, final boolean failed) {
             this.url = url;
             this.userName = userName;
             this.authtoken = authtoken;
             this.cardDAV = cardDAV;
             this.calDAV = calDAV;
+            this.tasks = tasks;
             this.logs = logs;
             this.failed = failed;
         }
@@ -115,6 +118,8 @@ public class BaseConfigurationFinder {
 
         public final ServiceInfo cardDAV;
         public final ServiceInfo calDAV;
+        public final ServiceInfo tasks;
+
 
         public final String logs;
 

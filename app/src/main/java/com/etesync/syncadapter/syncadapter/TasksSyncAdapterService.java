@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SyncResult;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.etesync.syncadapter.AccountSettings;
 import com.etesync.syncadapter.App;
@@ -79,7 +80,7 @@ public class TasksSyncAdapterService extends SyncAdapterService {
                 if (!extras.containsKey(ContentResolver.SYNC_EXTRAS_MANUAL) && !checkSyncConditions(settings))
                     return;
 
-                new RefreshCollections(account, CollectionInfo.Type.CALENDAR).run();
+                new RefreshCollections(account, CollectionInfo.Type.TASK_LIST).run();
 
                 updateLocalTaskLists(provider, account, settings);
 
@@ -119,7 +120,7 @@ public class TasksSyncAdapterService extends SyncAdapterService {
 
         private void updateLocalTaskLists(TaskProvider provider, Account account, AccountSettings settings) throws CalendarStorageException {
             EntityDataStore<Persistable> data = ((App) getContext().getApplicationContext()).getData();
-            ServiceEntity service = JournalModel.Service.fetchOrCreate(data, account.name, CollectionInfo.Type.TASK_LIST);
+            ServiceEntity service = JournalModel.Service.fetch(data, account.name, CollectionInfo.Type.TASK_LIST);
 
             Map<String, JournalEntity> remote = new HashMap<>();
             List<JournalEntity> remoteJournals = JournalEntity.getJournals(data, service);
@@ -149,7 +150,9 @@ public class TasksSyncAdapterService extends SyncAdapterService {
 
             // create new local task lists
             for (String url : remote.keySet()) {
+                Log.e("TALTALTAL", "CREATEING NEW");
                 JournalEntity journalEntity = remote.get(url);
+                Log.e("TALTALTAL", "CREATEING NEW" + journalEntity);
                 App.log.info("Adding local task list " + journalEntity);
                 LocalTaskList.create(account, provider, journalEntity);
             }

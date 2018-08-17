@@ -35,8 +35,6 @@ import com.etesync.syncadapter.resource.LocalResource;
 import com.etesync.syncadapter.ui.DebugInfoActivity;
 import com.etesync.syncadapter.ui.ViewCollectionActivity;
 
-import org.apache.commons.collections4.ListUtils;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
