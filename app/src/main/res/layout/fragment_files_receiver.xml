@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:padding="18dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="@string/should_we_upload_the_file"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <TextView
+        android:id="@+id/fileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <Spinner android:layout_width="match_parent"
+             android:id="@+id/time_limit_spinner"
+             android:layout_height="match_parent"
+             android:entries="@array/time_limits"/>
+
+    <Button
+        android:id="@+id/uploadFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/upload_file"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+</LinearLayout>

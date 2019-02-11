@@ -368,4 +368,17 @@
     <!-- Notifications -->
     <string name="notification_channel_name">EteSync</string>
     <string name="notification_channel_description">EteSync notifications</string>
+
+    <!-- File Sharing -->
+    <string name="uploading_files">Uploading files</string>
+    <string name="should_we_upload_the_file">Should we upload the file?</string>
+    <string name="upload_file">Upload File</string>
+    <string-array name="time_limits">
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>2 Hours</item>
+        <item>5 Hours</item>
+        <item>12 Hours</item>
+        <item>24 Hours</item>
+    </string-array>
 </resources>
