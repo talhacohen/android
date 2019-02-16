@@ -1,4 +1,4 @@
-package com.etesync.syncadapter.ui.files
+package com.etesync.syncadapter.ui.secureshare
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,7 +9,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.etesync.syncadapter.R
 
-class FilesReceiverFragment : Fragment() {
+class SecureShareHandlerFragment : Fragment() {
     private lateinit var fileName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,11 +24,12 @@ class FilesReceiverFragment : Fragment() {
         fileNameView.text = fileName
 
         val spinner = view.findViewById<View>(R.id.time_limit_spinner) as Spinner
-        spinner.setSelection(5)
+
+        spinner.setSelection(spinner.count - 1)
         view.findViewById<View>(R.id.uploadFile).setOnClickListener {
             val timeLimit = context!!.resources.getIntArray(R.array.time_limits_values)[spinner.selectedItemPosition]
-            if (activity is FilesReceiverFragment.UploadFile) {
-                (activity as FilesReceiverFragment.UploadFile).uploadFile(timeLimit)
+            if (activity is SecureShareHandlerFragment.UploadFile) {
+                (activity as SecureShareHandlerFragment.UploadFile).uploadFile(timeLimit)
             }
         }
 
@@ -42,8 +43,8 @@ class FilesReceiverFragment : Fragment() {
     companion object {
         private val ARG_FILE_NAME = "fileName"
 
-        fun newInstance(fileName : String): FilesReceiverFragment {
-            val frag = FilesReceiverFragment()
+        fun newInstance(fileName : String): SecureShareHandlerFragment {
+            val frag = SecureShareHandlerFragment()
             val args = Bundle(1)
             args.putString(ARG_FILE_NAME, fileName)
             frag.arguments = args

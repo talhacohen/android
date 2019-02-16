@@ -370,6 +370,7 @@
     <string name="notification_channel_description">EteSync notifications</string>
 
     <!-- File Sharing -->
+    <string name="secure_share">Secure Share</string>
     <string name="uploading_files">Uploading files</string>
     <string name="should_we_upload_the_file">Should we upload the file?</string>
     <string name="upload_file">Upload File</string>

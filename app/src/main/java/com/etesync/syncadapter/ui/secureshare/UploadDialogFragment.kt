@@ -1,4 +1,4 @@
-package com.etesync.syncadapter.ui.files
+package com.etesync.syncadapter.ui.secureshare
 
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import com.etesync.syncadapter.R
 
-class FilesUploadDialogFragment : DialogFragment() {
+class UploadDialogFragment : DialogFragment() {
     private lateinit var fileUri: Uri
     private var timeLimit: Int = 0
 
@@ -64,8 +64,8 @@ class FilesUploadDialogFragment : DialogFragment() {
         private val KEY_FILE_URI = "fileUri"
         private val KEY_TIME_LIMIT = "timeLimit"
 
-        fun newInstance(uri: Uri, timeLimit: Int): FilesUploadDialogFragment {
-            val frag = FilesUploadDialogFragment()
+        fun newInstance(uri: Uri, timeLimit: Int): UploadDialogFragment {
+            val frag = UploadDialogFragment()
             val args = Bundle(2)
             args.putParcelable(KEY_FILE_URI, uri)
             args.putInt(KEY_TIME_LIMIT, timeLimit)

@@ -1,4 +1,4 @@
-package com.etesync.syncadapter.ui.files
+package com.etesync.syncadapter.ui.secureshare
 
 import android.content.Intent
 import android.net.Uri
@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.etesync.syncadapter.R
 import com.etesync.syncadapter.ui.BaseActivity
 
-class FilesManagerActivity : BaseActivity(), FilesUploadDialogFragment.UploadFileCallbacks, FilesReceiverFragment.UploadFile {
+class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallbacks, SecureShareHandlerFragment.UploadFile {
     private lateinit var fileUri: Uri
     private lateinit var fileName : String
 
@@ -36,19 +36,19 @@ class FilesManagerActivity : BaseActivity(), FilesUploadDialogFragment.UploadFil
     }
 
     override fun uploadFile(timeLimit: Int) {
-        FilesUploadDialogFragment.newInstance(fileUri, timeLimit).show(supportFragmentManager, null)
+        UploadDialogFragment.newInstance(fileUri, timeLimit).show(supportFragmentManager, null)
     }
 
     override fun onUpload(url: String) {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.root_element, FileManagerFragment.newInstance(fileName, url), null)
+                .replace(R.id.root_element, ShareManagerFragment.newInstance(fileName, url), null)
                 .commit()
 
     }
 
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-            // TODO(talh): Call fiels upload dialog? Create a new fragment?
+            // TODO(talh): Call files upload dialog? Create a new fragment?
             Toast.makeText(this, "Text", Toast.LENGTH_SHORT).show()
         }
     }
@@ -64,10 +64,8 @@ class FilesManagerActivity : BaseActivity(), FilesUploadDialogFragment.UploadFil
 
                 fileName = cursor.getString(nameIndex)
 
-
-                // TODO(tal): Add size? val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
                 supportFragmentManager.beginTransaction()
-                        .add(R.id.root_element, FilesReceiverFragment.newInstance(fileName), null)
+                        .add(R.id.root_element, SecureShareHandlerFragment.newInstance(fileName), null)
                         .commit()
             }
         }
@@ -77,7 +75,7 @@ class FilesManagerActivity : BaseActivity(), FilesUploadDialogFragment.UploadFil
     private fun handleSendMultipleFiles(intent: Intent) {
         intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.let {
             Toast.makeText(this, "Multiple files", Toast.LENGTH_SHORT).show()
-            // TODO(talh): Do we want to support multiple images?
+            // TODO(talh): Do we want to support multiple files?
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.etesync.syncadapter.ui.files
+package com.etesync.syncadapter.ui.secureshare
 
 import android.content.ComponentName
 import android.content.Intent
@@ -14,7 +14,7 @@ import android.widget.TextView
 import com.etesync.syncadapter.R
 
 
-class FileManagerFragment : Fragment() {
+class ShareManagerFragment : Fragment() {
     private lateinit var fileName: String
     private lateinit var fileUrl: String
 
@@ -72,8 +72,8 @@ class FileManagerFragment : Fragment() {
         private val ARG_FILE_NAME = "fileName"
         private val ARG_FILE_URL = "fileUrl"
 
-        fun newInstance(fileName: String, fileUrl: String): FileManagerFragment {
-            val frag = FileManagerFragment()
+        fun newInstance(fileName: String, fileUrl: String): ShareManagerFragment {
+            val frag = ShareManagerFragment()
             val args = Bundle(1)
             args.putString(ARG_FILE_NAME, fileName)
             args.putString(ARG_FILE_URL, fileUrl)
