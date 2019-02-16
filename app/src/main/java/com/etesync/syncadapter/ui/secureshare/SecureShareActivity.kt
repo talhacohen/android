@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.OpenableColumns
-import android.widget.Toast
 import com.etesync.syncadapter.R
 import com.etesync.syncadapter.model.SecureShare
 import com.etesync.syncadapter.ui.BaseActivity
@@ -23,17 +22,14 @@ class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallb
                     handleSendFile(intent)
                 }
             }
-            intent?.action == Intent.ACTION_SEND_MULTIPLE -> {
-                handleSendMultipleFiles(intent)
-            }
             else -> {
-                // TODO(talh): Show error?
-                Toast.makeText(this, "Unsupported", Toast.LENGTH_SHORT).show()
+                // We should never get here
+                finish()
             }
         }
     }
 
-    override fun onUpload(secureShare : SecureShare , url: String) {
+    override fun onUpload(secureShare: SecureShare, url: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.root_element, ShareManagerFragment.newInstance(secureShare, url), null)
                 .commit()
@@ -42,8 +38,9 @@ class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallb
 
     private fun handleSendText(intent: Intent) {
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-            // TODO(talh): Call files upload dialog? Create a new fragment?
-            Toast.makeText(this, "Text", Toast.LENGTH_SHORT).show()
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.root_element, SecureShareHandlerFragment.newInstance(SecureShare(Uri.EMPTY, it)), null)
+                    .commit()
         }
     }
 
@@ -61,14 +58,6 @@ class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallb
                         .add(R.id.root_element, SecureShareHandlerFragment.newInstance(SecureShare(data, fileName)), null)
                         .commit()
             }
-        }
-
-    }
-
-    private fun handleSendMultipleFiles(intent: Intent) {
-        intent.getParcelableArrayListExtra<Parcelable>(Intent.EXTRA_STREAM)?.let {
-            Toast.makeText(this, "Multiple files", Toast.LENGTH_SHORT).show()
-            // TODO(talh): Do we want to support multiple files?
         }
     }
 }

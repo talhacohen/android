@@ -22,7 +22,7 @@ class SecureShareHandlerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_files_receiver, container, false)
 
         val fileNameView = view.findViewById<View>(R.id.fileName) as TextView
-        fileNameView.text = secureShare.fileName
+        fileNameView.text = secureShare.title
 
         val spinner = view.findViewById<View>(R.id.time_limit_spinner) as Spinner
 

@@ -62,7 +62,7 @@ class UploadDialogFragment : DialogFragment() {
                     .setContentText(context!!.getString(R.string.uploading_file))
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
 
-            notificationManager.notify(secureShare.fileName.hashCode(), builder)
+            notificationManager.notify(secureShare.title.hashCode(), builder)
         }
 
         override fun doInBackground(vararg voids: Void): Void? {
@@ -77,7 +77,7 @@ class UploadDialogFragment : DialogFragment() {
         }
 
         override fun onPostExecute(result: Void) {
-            notificationManager.cancel(secureShare.fileName.hashCode())
+            notificationManager.cancel(secureShare.title.hashCode())
             dismiss()
             if (activity is UploadFileCallbacks) {
                 (activity as UploadFileCallbacks).onUpload(secureShare, "FILE_URL")

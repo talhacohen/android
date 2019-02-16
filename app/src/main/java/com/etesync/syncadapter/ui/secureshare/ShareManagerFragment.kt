@@ -29,7 +29,7 @@ class ShareManagerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_file_manager, container, false)
 
         val fileNameView = view.findViewById<View>(R.id.fileName) as TextView
-        fileNameView.text = "${secureShare.fileName}: $fileUrl"
+        fileNameView.text = "${secureShare.title}: $fileUrl"
 
         (view.findViewById<View>(R.id.shareFile) as Button).setOnClickListener {
             shareUrlExcludingEteSync()
@@ -60,7 +60,7 @@ class ShareManagerFragment : Fragment() {
                 }
             }
             if (!shareIntentsLists.isEmpty()) {
-                val chooserIntent = Intent.createChooser(shareIntent, "Share ${secureShare.fileName}")
+                val chooserIntent = Intent.createChooser(shareIntent, "Share ${secureShare.title}")
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, shareIntentsLists.toArray(arrayOf<Parcelable>()))
                 startActivity(chooserIntent)
             } else
