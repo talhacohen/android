@@ -2,20 +2,19 @@ package com.etesync.syncadapter.ui.secureshare
 
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import com.etesync.syncadapter.R
+import com.etesync.syncadapter.model.SecureShare
 
 class UploadDialogFragment : DialogFragment() {
-    private lateinit var fileUri: Uri
+    private lateinit var secureShare: SecureShare
     private var timeLimit: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fileUri = arguments!!.getParcelable(KEY_FILE_URI)!!
-        timeLimit = arguments!!.getInt(KEY_TIME_LIMIT)
+        secureShare = arguments!!.getParcelable(SecureShare.KEY_SECURE_SHARE)!!
 
         UploadFile().execute()
     }
@@ -47,7 +46,7 @@ class UploadDialogFragment : DialogFragment() {
         override fun onPostExecute(result: Void) {
             dismiss()
             if (activity is UploadFileCallbacks) {
-                (activity as UploadFileCallbacks).onUpload("FILE_URL")
+                (activity as UploadFileCallbacks).onUpload(secureShare, "FILE_URL")
             }
         }
 
@@ -57,17 +56,16 @@ class UploadDialogFragment : DialogFragment() {
     }
 
     interface UploadFileCallbacks {
-        fun onUpload(url: String)
+        fun onUpload(secureShare: SecureShare, url: String)
     }
 
     companion object {
-        private val KEY_FILE_URI = "fileUri"
         private val KEY_TIME_LIMIT = "timeLimit"
 
-        fun newInstance(uri: Uri, timeLimit: Int): UploadDialogFragment {
+        fun newInstance(secureShare: SecureShare, timeLimit: Int): UploadDialogFragment {
             val frag = UploadDialogFragment()
             val args = Bundle(2)
-            args.putParcelable(KEY_FILE_URI, uri)
+            args.putParcelable(SecureShare.KEY_SECURE_SHARE, secureShare)
             args.putInt(KEY_TIME_LIMIT, timeLimit)
             frag.arguments = args
             return frag

@@ -8,45 +8,38 @@ import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.TextView
 import com.etesync.syncadapter.R
+import com.etesync.syncadapter.model.SecureShare
 
 class SecureShareHandlerFragment : Fragment() {
-    private lateinit var fileName : String
+    private lateinit var secureShare: SecureShare
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fileName = arguments!!.getString(ARG_FILE_NAME)!!
+        secureShare = arguments!!.getParcelable(SecureShare.KEY_SECURE_SHARE)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_files_receiver, container, false)
 
         val fileNameView = view.findViewById<View>(R.id.fileName) as TextView
-        fileNameView.text = fileName
+        fileNameView.text = secureShare.fileName
 
         val spinner = view.findViewById<View>(R.id.time_limit_spinner) as Spinner
 
         spinner.setSelection(spinner.count - 1)
         view.findViewById<View>(R.id.uploadFile).setOnClickListener {
             val timeLimit = context!!.resources.getIntArray(R.array.time_limits_values)[spinner.selectedItemPosition]
-            if (activity is SecureShareHandlerFragment.UploadFile) {
-                (activity as SecureShareHandlerFragment.UploadFile).uploadFile(timeLimit)
-            }
+            UploadDialogFragment.newInstance(secureShare, timeLimit).show(childFragmentManager, null)
         }
 
         return view
     }
 
-    interface UploadFile {
-        fun uploadFile(timeLimit: Int)
-    }
-
     companion object {
-        private val ARG_FILE_NAME = "fileName"
-
-        fun newInstance(fileName : String): SecureShareHandlerFragment {
+        fun newInstance(secureShare : SecureShare): SecureShareHandlerFragment {
             val frag = SecureShareHandlerFragment()
             val args = Bundle(1)
-            args.putString(ARG_FILE_NAME, fileName)
+            args.putParcelable(SecureShare.KEY_SECURE_SHARE, secureShare)
             frag.arguments = args
             return frag
         }

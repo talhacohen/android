@@ -7,12 +7,10 @@ import android.os.Parcelable
 import android.provider.OpenableColumns
 import android.widget.Toast
 import com.etesync.syncadapter.R
+import com.etesync.syncadapter.model.SecureShare
 import com.etesync.syncadapter.ui.BaseActivity
 
-class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallbacks, SecureShareHandlerFragment.UploadFile {
-    private lateinit var fileUri: Uri
-    private lateinit var fileName : String
-
+class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_files_manager)
@@ -35,13 +33,9 @@ class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallb
         }
     }
 
-    override fun uploadFile(timeLimit: Int) {
-        UploadDialogFragment.newInstance(fileUri, timeLimit).show(supportFragmentManager, null)
-    }
-
-    override fun onUpload(url: String) {
+    override fun onUpload(secureShare : SecureShare , url: String) {
         supportFragmentManager.beginTransaction()
-                .replace(R.id.root_element, ShareManagerFragment.newInstance(fileName, url), null)
+                .replace(R.id.root_element, ShareManagerFragment.newInstance(secureShare, url), null)
                 .commit()
 
     }
@@ -55,17 +49,16 @@ class SecureShareActivity : BaseActivity(), UploadDialogFragment.UploadFileCallb
 
     private fun handleSendFile(intent: Intent) {
         (intent.getParcelableExtra<Parcelable>(Intent.EXTRA_STREAM) as? Uri)?.let { data ->
-            fileUri = data
             data.let { returnUri ->
                 contentResolver.query(returnUri, null, null, null, null)
             }?.use { cursor ->
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 cursor.moveToFirst()
 
-                fileName = cursor.getString(nameIndex)
+                val fileName = cursor.getString(nameIndex)
 
                 supportFragmentManager.beginTransaction()
-                        .add(R.id.root_element, SecureShareHandlerFragment.newInstance(fileName), null)
+                        .add(R.id.root_element, SecureShareHandlerFragment.newInstance(SecureShare(data, fileName)), null)
                         .commit()
             }
         }

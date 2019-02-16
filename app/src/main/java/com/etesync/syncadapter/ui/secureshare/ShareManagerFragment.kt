@@ -12,15 +12,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.etesync.syncadapter.R
+import com.etesync.syncadapter.model.SecureShare
 
 
 class ShareManagerFragment : Fragment() {
-    private lateinit var fileName: String
+    private lateinit var secureShare: SecureShare
     private lateinit var fileUrl: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fileName = arguments!!.getString(ARG_FILE_NAME)!!
+        secureShare = arguments!!.getParcelable(SecureShare.KEY_SECURE_SHARE)!!
         fileUrl = arguments!!.getString(ARG_FILE_URL)!!
     }
 
@@ -28,7 +29,7 @@ class ShareManagerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_file_manager, container, false)
 
         val fileNameView = view.findViewById<View>(R.id.fileName) as TextView
-        fileNameView.text = "$fileName: $fileUrl"
+        fileNameView.text = "${secureShare.fileName}: $fileUrl"
 
         (view.findViewById<View>(R.id.shareFile) as Button).setOnClickListener {
             shareUrlExcludingEteSync()
@@ -59,7 +60,7 @@ class ShareManagerFragment : Fragment() {
                 }
             }
             if (!shareIntentsLists.isEmpty()) {
-                val chooserIntent = Intent.createChooser(shareIntent, "Share $fileName")
+                val chooserIntent = Intent.createChooser(shareIntent, "Share ${secureShare.fileName}")
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, shareIntentsLists.toArray(arrayOf<Parcelable>()))
                 startActivity(chooserIntent)
             } else
@@ -69,13 +70,12 @@ class ShareManagerFragment : Fragment() {
     }
 
     companion object {
-        private val ARG_FILE_NAME = "fileName"
         private val ARG_FILE_URL = "fileUrl"
 
-        fun newInstance(fileName: String, fileUrl: String): ShareManagerFragment {
+        fun newInstance(secureShare: SecureShare, fileUrl: String): ShareManagerFragment {
             val frag = ShareManagerFragment()
             val args = Bundle(1)
-            args.putString(ARG_FILE_NAME, fileName)
+            args.putParcelable(SecureShare.KEY_SECURE_SHARE, secureShare)
             args.putString(ARG_FILE_URL, fileUrl)
             frag.arguments = args
             return frag
